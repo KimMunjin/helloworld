@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: komca-helloworld
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+      base-path: /actuator     # 추가: 기본 경로 설정
+  endpoint:
+    health:
+      #     show-details: when_authorized    # 추가: 인증된 사용자에게만 상세 정보 노출 - 현재 테스트로 주석처리
+      probes:
+        enabled: true    # 추가: k8s 라이브니스/레디니스 프로브 활성화
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      environment: ${spring.profiles.active:dev}
+    enable:
+      jvm: true         # 추가: JVM 메트릭 활성화
+      process: true     # 추가: 프로세스 메트릭 활성화
+      system: true      # 추가: 시스템 메트릭 활성화
+  prometheus:
+    metrics:
+      export:
+        enabled: true   # 추가: 프로메테우스 메트릭 익스포트 활성화

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Property>
+        <Property name="APPLICATION_NAME">${sys:application_name:-unknown}</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="ConsoleJson" target="SYSTEM_OUT">
+            <PatternLayout pattern="{&quot;timestamp&quot;:&quot;%d{yyyy-MM-dd HH:mm:ss.SSS}&quot;,&quot;level&quot;:&quot;%level&quot;,&quot;thread&quot;:&quot;%thread&quot;,&quot;class&quot;:&quot;%logger{36}&quot;,&quot;application_name&quot;:&quot;${APPLICATION_NAME}&quot;,&quot;trace_id&quot;:&quot;%X{traceId}&quot;,&quot;message&quot;:&quot;%message&quot;}%n"/>
+        </Console>
+
+        <!-- 비동기 처리를 위한 애펜더 -->
+        <Async name="AsyncJson">
+            <AppenderRef ref="ConsoleJson"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <!-- 애플리케이션 로거 -->
+        <Logger name="kr.or.komca" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncJson"/>
+        </Logger>
+
+        <!-- 기본 루트 로거 -->
+        <Root level="INFO">
+            <AppenderRef ref="AsyncJson"/>
+        </Root>
+    </Loggers>
+</Configuration>

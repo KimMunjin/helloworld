@@ -1,0 +1,12 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  config: classpath:log4j2-prod.xml
+  properties:
+    application_name: ${spring.application.name}
+  level:
+    root: DEBUG
+    kr.or.komca: DEBUG

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- log4j2.xml -->
+<Configuration status="DEBUG">
+    <Properties>
+        <!--<Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Property> -->
+        <Property name="LOG_PATTERN">[%c{1}] %d %5p %m%n</Property>
+        <Property name="APP_LOG_ROOT">logs</Property>
+        <Property name="APPLICATION_NAME">${sys:application_name:-unknown}</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <RollingFile name="ApplicationLog"
+                     fileName="${APP_LOG_ROOT}/application.log"
+                     filePattern="${APP_LOG_ROOT}/application-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <!-- JSON 형식의 로그 출력을 위한 설정 -->
+        <RollingFile name="JsonApplicationLog"
+                     fileName="${APP_LOG_ROOT}/json-application.log"
+                     filePattern="${APP_LOG_ROOT}/json-application-%d{yyyy-MM-dd}-%i.log">
+            <JsonLayout complete="false" compact="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss.SSS}"/>
+                <KeyValuePair key="service" value="${APPLICATION_NAME}"/>
+                <KeyValuePair key="trace" value="$${ctx:traceId}"/>
+                <KeyValuePair key="span" value="$${ctx:spanId}"/>
+            </JsonLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="ApplicationLog"/>
+            <AppenderRef ref="JsonApplicationLog"/>
+        </Root>
+
+        <Logger name="kr.co.komca" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="ApplicationLog"/>
+            <AppenderRef ref="JsonApplicationLog"/>
+        </Logger>
+    </Loggers>
+</Configuration>
