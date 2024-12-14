@@ -1,15 +1,15 @@
-[HelloworldApplication] 2024-12-08 17:51:51,006  INFO Starting HelloworldApplication using Java 17.0.13 with PID 14812 (C:\Users\jhju2\IdeaProjects\helloworld\build\classes\java\main started by jhju2 in C:\Users\jhju2\IdeaProjects\helloworld)
-[HelloworldApplication] 2024-12-08 17:51:51,104  INFO No active profile set, falling back to 1 default profile: "default"
-[TomcatWebServer] 2024-12-08 17:51:51,815  INFO Tomcat initialized with port 8080 (http)
-[Http11NioProtocol] 2024-12-08 17:51:51,824  INFO Initializing ProtocolHandler ["http-nio-8080"]
-[StandardService] 2024-12-08 17:51:51,826  INFO Starting service [Tomcat]
-[StandardEngine] 2024-12-08 17:51:51,827  INFO Starting Servlet engine: [Apache Tomcat/10.1.33]
-[[/]] 2024-12-08 17:51:51,861  INFO Initializing Spring embedded WebApplicationContext
-[ServletWebServerApplicationContext] 2024-12-08 17:51:51,861  INFO Root WebApplicationContext: initialization completed in 709 ms
-[EndpointLinksResolver] 2024-12-08 17:51:52,253  INFO Exposing 3 endpoints beneath base path '/actuator'
-[Http11NioProtocol] 2024-12-08 17:51:52,278  INFO Starting ProtocolHandler ["http-nio-8080"]
-[TomcatWebServer] 2024-12-08 17:51:52,290  INFO Tomcat started on port 8080 (http) with context path '/'
-[HelloworldApplication] 2024-12-08 17:51:52,300  INFO Started HelloworldApplication in 1.631 seconds (process running for 2.463)
-[[/]] 2024-12-08 17:51:52,889  INFO Initializing Spring DispatcherServlet 'dispatcherServlet'
-[DispatcherServlet] 2024-12-08 17:51:52,891  INFO Initializing Servlet 'dispatcherServlet'
-[DispatcherServlet] 2024-12-08 17:51:52,893  INFO Completed initialization in 1 ms
+[HelloworldApplication] 2024-12-11 16:09:30,640  INFO Starting HelloworldApplication using Java 17.0.13 with PID 17028 (C:\Users\jhju2\IdeaProjects\helloworld\build\classes\java\main started by jhju2 in C:\Users\jhju2\IdeaProjects\helloworld)
+[HelloworldApplication] 2024-12-11 16:09:30,705  INFO No active profile set, falling back to 1 default profile: "default"
+[TomcatWebServer] 2024-12-11 16:09:31,483  INFO Tomcat initialized with port 8080 (http)
+[Http11NioProtocol] 2024-12-11 16:09:31,496  INFO Initializing ProtocolHandler ["http-nio-8080"]
+[StandardService] 2024-12-11 16:09:31,498  INFO Starting service [Tomcat]
+[StandardEngine] 2024-12-11 16:09:31,498  INFO Starting Servlet engine: [Apache Tomcat/10.1.33]
+[[/]] 2024-12-11 16:09:31,539  INFO Initializing Spring embedded WebApplicationContext
+[ServletWebServerApplicationContext] 2024-12-11 16:09:31,540  INFO Root WebApplicationContext: initialization completed in 807 ms
+[EndpointLinksResolver] 2024-12-11 16:09:31,973  INFO Exposing 3 endpoints beneath base path '/actuator'
+[Http11NioProtocol] 2024-12-11 16:09:32,002  INFO Starting ProtocolHandler ["http-nio-8080"]
+[TomcatWebServer] 2024-12-11 16:09:32,014  INFO Tomcat started on port 8080 (http) with context path '/'
+[HelloworldApplication] 2024-12-11 16:09:32,024  INFO Started HelloworldApplication in 1.696 seconds (process running for 2.503)
+[[/]] 2024-12-11 16:09:32,405  INFO Initializing Spring DispatcherServlet 'dispatcherServlet'
+[DispatcherServlet] 2024-12-11 16:09:32,406  INFO Initializing Servlet 'dispatcherServlet'
+[DispatcherServlet] 2024-12-11 16:09:32,407  INFO Completed initialization in 1 ms
