@@ -17,7 +17,7 @@ public class HelloController {
     @GetMapping("/hello")
     public ResponseEntity<HelloResponse> hello() {
         HelloResponse response = new HelloResponse(
-                "안녕하세요! Spring Boot API 입니다.../",
+                "안녕하세요! Spring Boot API 입니다../",
                 LocalDateTime.now()
         );
 
