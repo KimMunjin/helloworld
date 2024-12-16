@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: sample-app
-          image: 897722706632.dkr.ecr.ap-northeast-2.amazonaws.com/hello-dev-cluster:latest
+          image: 897722706632.dkr.ecr.ap-northeast-2.amazonaws.com/github-actions-cicd-demo:latest
           ports:
             - containerPort: 8080
           livenessProbe:
