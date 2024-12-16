@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- log4j2.xml -->
+<!-- active profile - local 일 경우 로그파일. log4j2-local.xml -->
 <Configuration status="DEBUG">
     <Properties>
-        <!--<Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Property> -->
-        <Property name="LOG_PATTERN">[%c{1}] %d %5p %m%n</Property>
+        <!-- 애플리케이션 로그 패턴 (traceId, hostname 포함) -->
+        <!-- <Property name="APP_LOG_PATTERN">[%X{traceId}] [%X{hostname}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%level] [%t] %c{1} - %msg%n</Property> -->
+        <Property name="APP_LOG_PATTERN">[%level] [%t] %d{yyyy-MM-dd HH:mm:ss.SSS} [TraceId:%X{traceId}] %c{1} - %msg%n</Property>
+        <!-- 시스템 로그 패턴 (단순화된 형태) -->
+        <Property name="SYS_LOG_PATTERN">[%level] [%t] %c{1} - %msg%n</Property>
         <Property name="APP_LOG_ROOT">logs</Property>
-        <Property name="APPLICATION_NAME">${sys:application_name:-unknown}</Property>
     </Properties>
 
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="${LOG_PATTERN}"/>
+        <!-- 애플리케이션 로그용 콘솔 -->
+        <Console name="AppConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="${APP_LOG_PATTERN}"/>
+        </Console>
+
+        <!-- 시스템 로그용 콘솔 -->
+        <Console name="SysConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="${SYS_LOG_PATTERN}"/>
         </Console>
 
         <RollingFile name="ApplicationLog"
                      fileName="${APP_LOG_ROOT}/application.log"
                      filePattern="${APP_LOG_ROOT}/application-%d{yyyy-MM-dd}-%i.log">
-            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <PatternLayout pattern="${APP_LOG_PATTERN}"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="10MB"/>
@@ -24,7 +32,6 @@
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
 
-        <!-- JSON 형식의 로그 출력을 위한 설정 -->
         <RollingFile name="JsonApplicationLog"
                      fileName="${APP_LOG_ROOT}/json-application.log"
                      filePattern="${APP_LOG_ROOT}/json-application-%d{yyyy-MM-dd}-%i.log">
@@ -43,16 +50,18 @@
     </Appenders>
 
     <Loggers>
-        <Root level="INFO">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="ApplicationLog"/>
-            <AppenderRef ref="JsonApplicationLog"/>
-        </Root>
-
-        <Logger name="kr.co.komca" level="DEBUG" additivity="false">
-            <AppenderRef ref="Console"/>
+        <!-- kr.or.komca 패키지는 APP_LOG_PATTERN 사용 -->
+        <Logger name="kr.or.komca" level="DEBUG" additivity="false">
+            <AppenderRef ref="AppConsole"/>
             <AppenderRef ref="ApplicationLog"/>
             <AppenderRef ref="JsonApplicationLog"/>
         </Logger>
+
+        <!-- 나머지 모든 로그는 SYS_LOG_PATTERN 사용 -->
+        <Root level="INFO">
+            <AppenderRef ref="SysConsole"/>
+            <AppenderRef ref="ApplicationLog"/>
+            <AppenderRef ref="JsonApplicationLog"/>
+        </Root>
     </Loggers>
 </Configuration>
