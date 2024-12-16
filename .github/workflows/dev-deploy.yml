@@ -1,0 +1,67 @@
+# GitHub Actions 워크플로우 파일의 위치와 이름
+# .github/workflows/dev-deploy.yml
+name: CI/CD Pipeline
+
+# 워크플로우 트리거 설정
+on:
+  push:
+    branches: [ "develop" ]  # develop 브랜치에 push될 때만 실행
+#  pull_request:
+#    branches: [ "develop" ]
+
+# GitHub Actions 에 필요한 권한 설정
+permissions:
+  id-token: write    # OIDC 토큰을 사용하기 위한 권한
+  contents: read     # 레포지토리 컨텐츠 읽기 권한
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest    # Ubuntu 최신 버전에서 작업 실행
+
+    steps:
+      # 레포지토리 코드를 워크플로우 환경으로 체크아웃
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Java 개발 환경 설정
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'          # Java 17 버전 사용
+          distribution: 'temurin'      # Eclipse Temurin 배포판 사용
+          cache: gradle               # Gradle 캐시 활성화로 빌드 속도 향상
+
+      # Gradle wrapper에 실행 권한 부여
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Gradle을 사용하여 프로젝트 빌드
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      # AWS 자격 증명 설정 (IAM Role 사용)
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Amazon ECR 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr    # 후속 단계에서 참조하기 위한 ID
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Docker 이미지 빌드 및 ECR 푸시
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}     # ECR 레지스트리 주소
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}            # ECR 레포지토리 이름
+          IMAGE_TAG: ${{ github.sha }}                            # 커밋 SHA를 이미지 태그로 사용
+        run: |
+          # 이미지 빌드 및 태그 설정 (commit SHA와 latest 태그 모두 사용)
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          
+          # 두 태그 모두 ECR에 푸시
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest

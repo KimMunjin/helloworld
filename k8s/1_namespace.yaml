@@ -1,0 +1,7 @@
+# 1_namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sample-app  # 애플리케이션 네임스페이스
+  labels:
+    name: sample-app

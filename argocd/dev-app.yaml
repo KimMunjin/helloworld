@@ -1,0 +1,26 @@
+# argocd/dev-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jhju21-github/hello.git    # 여러분의 GitHub 저장소 URL
+    targetRevision: develop
+    path: k8s/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-dev
+  syncPolicy:
+    automated:
+      prune: true        # 제거된 리소스 자동 정리
+      selfHeal: true     # 수동 변경된 리소스 자동 복구
+    syncOptions:
+      - CreateNamespace=true
+
+# ArgoCD 설치 명령어 (PowerShell):
+# kubectl create namespace argocd
+# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+# kubectl apply -f argocd/dev-app.yaml

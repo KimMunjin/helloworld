@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- active profile - prod 일 경우 로그파일. log4j2-prod.xml -->
 <Configuration status="INFO">
     <Properties>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Property>

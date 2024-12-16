@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- active profile - dev 일 경우 로그파일. log4j2-dev.xml -->
 <Configuration status="DEBUG">
     <Properties>
         <!-- 애플리케이션 로그 패턴 (traceId, hostname 포함) -->

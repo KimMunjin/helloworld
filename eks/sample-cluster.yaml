@@ -1,0 +1,37 @@
+# cluster.yaml
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: sample-eks-cluster
+  region: ap-northeast-2
+  version: "1.28"
+
+# VPC 설정
+vpc:
+  cidr: "10.0.0.0/16"
+  nat:
+    gateway: Single
+
+# 관리형 노드 그룹 설정
+managedNodeGroups:
+  - name: ng-1
+    instanceType: t3.medium
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 3
+    volumeSize: 20
+    privateNetworking: true
+    tags:
+      Environment: dev
+
+# IAM 설정
+iam:
+  withOIDC: true        # OIDC 공급자 활성화
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true    # ALB Controller 정책 자동 연결
+      roleName: eks-alb-controller-role    # 명시적 역할 이름 지정
