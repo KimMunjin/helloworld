@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: sample-app
-          image: 528757818716.dkr.ecr.ap-northeast-2.amazonaws.com/sample-project:latest
+          image: 897722706632.dkr.ecr.ap-northeast-2.amazonaws.com/hello-dev-cluster:latest
           ports:
             - containerPort: 8080
           livenessProbe:
