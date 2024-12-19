@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sample-app-monitor
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: sample-app
+      release: prometheus    # 추가
+  namespaceSelector:
+    matchNames:
+      - sample-app
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 15s

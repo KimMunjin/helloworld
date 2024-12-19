@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudWatch Dashboard for EKS Cluster Monitoring'
+
+Parameters:
+  ClusterName:
+    Type: String
+    Description: Name of the EKS cluster
+    Default: my-cluster1
+
+Resources:
+  EKSMonitoringDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Sub '${ClusterName}-monitoring'
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "metric",
+              "width": 8,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "ContainerInsights", "node_cpu_utilization", "ClusterName", "${ClusterName}" ]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "ap-northeast-2",
+                "title": "Node CPU Utilization"
+              }
+            },
+            {
+              "type": "metric",
+              "width": 8,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "ContainerInsights", "node_memory_utilization", "ClusterName", "${ClusterName}" ]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "ap-northeast-2",
+                "title": "Node Memory Utilization"
+              }
+            },
+            {
+              "type": "metric",
+              "width": 8,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "ContainerInsights", "node_filesystem_utilization", "ClusterName", "${ClusterName}" ]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "ap-northeast-2",
+                "title": "Disk Usage"
+              }
+            },
+            {
+              "type": "metric",
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "ContainerInsights", "pod_number_of_container_restarts", "ClusterName", "${ClusterName}" ],
+                  [ ".", "pod_number_of_running_containers", ".", "." ]
+                ],
+                "period": 300,
+                "stat": "Sum",
+                "region": "ap-northeast-2",
+                "title": "Pod Status"
+              }
+            },
+            {
+              "type": "metric",
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "ContainerInsights", "cluster_node_count", "ClusterName", "${ClusterName}" ],
+                  [ ".", "cluster_failed_node_count", ".", "." ]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "ap-northeast-2",
+                "title": "Cluster Node Status"
+              }
+            },
+            {
+              "type": "metric",
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "ContainerInsights", "node_network_total_bytes", "ClusterName", "${ClusterName}" ]
+                ],
+                "period": 300,
+                "stat": "Sum",
+                "region": "ap-northeast-2",
+                "title": "Network Total Bytes"
+              }
+            }
+          ]
+        }
