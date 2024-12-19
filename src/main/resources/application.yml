@@ -25,7 +25,7 @@ management:
       process: true     # 추가: 프로세스 메트릭 활성화
       system: true      # 추가: 시스템 메트릭 활성화
       http: true
-      logback: true
+      log4j2: true
   prometheus:
     metrics:
       export:
